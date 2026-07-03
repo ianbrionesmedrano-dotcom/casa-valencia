@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&family=Lavishly+Yours&family=Nixie+One&family=Tangerine:wght@400;700&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
+    
+    <title>Casa Valencia - Menú Gourmet e Iluminado</title>
+    <style>
+        /* --- ESTILOS GENERALES Y RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f3d69cac; 
+            color: #2e2a26;
+            font-family: 'Georgia', serif; 
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- DETALLE OPTIMIZADO: ENTRADA ULTRA SUAVE --- */
+        .pantalla-entrada {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 9999; 
+            opacity: 1;
+            visibility: visible;
+            /* Se extiende la duración a 2.2 segundos y se usa una curva de desaceleración mucho más fluida */
+            transition: opacity 2.2s cubic-bezier(0.33, 1, 0.68, 1), 
+                        backdrop-filter 2.2s cubic-bezier(0.33, 1, 0.68, 1), 
+                        -webkit-backdrop-filter 2.2s cubic-bezier(0.33, 1, 0.68, 1),
+                        visibility 2.2s;
+            pointer-events: none; 
+        }
+
+        .pantalla-entrada.desvanecer {
+            opacity: 0;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            visibility: hidden;
+        }
+
+        /* --- EFECTO CREATIVO: ESTRUCTURA SUPERIOR --- */
+        .pergola-shadow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; 
+            z-index: 10; 
+            opacity: 0.7; 
+            background-image: 
+                radial-gradient(circle at 50% -10%, rgba(248, 246, 242, 0.1) 0%, rgba(46, 42, 38, 0.05) 60%),
+                linear-gradient(to bottom, 
+                    rgba(46, 42, 38, 0.1) 0%,   
+                    rgba(248, 246, 242, 0) 10%, 
+                    rgba(46, 42, 38, 0.08) 20%,  
+                    rgba(248, 246, 242, 0) 30%,
+                    rgba(46, 42, 38, 0.05) 40%,  
+                    rgba(248, 246, 242, 0) 60%,
+                    rgba(46, 42, 38, 0.02) 80%,  
+                    rgba(248, 246, 242, 0) 100%
+                );
+        }
+
+        /* --- SECCIÓN 1: PORTADA PRINCIPAL --- */
+        .portada {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            background-image: url('imagenes/fondo_1_viernes_donas.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover; 
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start; 
+            padding-left: 10%; 
+            color: #fff;
+        }
+
+        .portada::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 60% 40%, rgba(235, 220, 185, 0.15) 0%, rgba(0, 0, 0, 0.35) 100%),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, transparent 40%); 
+            z-index: 1;
+        }
+
+        .contenedor-texto {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-start; 
+            gap: 1.5vw; 
+            width: 80%;
+            max-width: 600px;
+            margin-top: -8vh; 
+        }
+
+        .texto-casa, .texto-valencia {
+            font-size: clamp(1.8rem, 6vw, 4.2rem); 
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-weight: 400;
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .texto-valencia {
+            font-family: "Nixie One", system-ui;
+            font-weight: 300;
+            margin-bottom: 3px;
+        }
+
+        .texto-viernes {
+            font-family: 'Corinthia', cursive;
+            font-size: clamp(1.9rem, 4.5vw, 3.4rem);
+            color: #ebdcb9; 
+            font-weight: 400;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            text-transform: none;
+            text-shadow: 0 0 18px rgba(235, 220, 185, 0.7), 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- ESTILO DE ANIMACIÓN FLUIDA --- */
+        .letra-oculta {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px); 
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: pre; 
+        }
+
+        .letra-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- SECCIÓN INTRODUCCIÓN AL MENÚ --- */
+        .introduccion-menu {
+            text-align: center;
+            max-width: 550px; 
+            margin: 80px auto 40px auto;
+            padding: 0 25px;
+            position: relative;
+            z-index: 2; 
+        }
+
+        .titulo-menu-dia {
+            font-family: 'Corinthia', cursive;
+            font-size: clamp(4rem, 8vw, 7rem); 
+            color: #7a6313; 
+            margin-bottom: 12px;
+            font-weight: 400;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: color 0.8s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .titulo-menu-dia.iluminado {
+            color: #b1921e; 
+            text-shadow: 
+                0 0 20px rgba(177, 146, 30, 0.6), 
+                0 0 35px rgba(255, 255, 255, 0.8),
+                0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+        
+        .bienvenida-menu {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: clamp(0.7rem, 1.6vw, 0.72rem); 
+            font-weight: 100; 
+            color: #7a5a3a; 
+            opacity: 0.7; 
+            line-height: 1.35;
+            letter-spacing: 1.2px;
+        }
+
+        /* --- RECUADROS DEL MENÚ --- */
+        .seccion-menu {
+            padding: 0 20px 40px 20px; 
+            max-width: 1250px; 
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 2; 
+        }
+
+        .grid-recuadros {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px; 
+            position: relative;
+        }
+
+        .division {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 45px 25px; 
+            background-color: rgba(228, 204, 133, 0.6); 
+            border-radius: 15px; 
+            box-shadow: 
+                0 4px 15px rgba(46, 42, 38, 0.04),
+                0 1px 3px rgba(46, 42, 38, 0.02);
+            transition: 
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.5s ease, 
+                background-color 0.5s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(228, 213, 133, 0.1); 
+        }
+
+        .division:hover {
+            transform: translateY(-8px); 
+            background-color: #ebdcb9; 
+            box-shadow: 
+                0 15px 40px rgba(160, 129, 30, 0.2), 
+                0 0 18px rgba(255, 255, 255, 0.5),
+                0 1px 2px rgba(0, 0, 0, 0.1); 
+        }
+
+        .division::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 30%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg);
+            transition: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .division:hover::after {
+            transition: left 0.9s ease-in-out;
+            left: 130%;
+            opacity: 1;
+        }
+
+        .division img {
+            width: 78%; 
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 4px; 
+            margin: 0 auto; 
+            transition: transform 0.5s ease;
+        }
+
+        .division:hover img {
+            transform: scale(1.05);
+        }
+
+        .info-platillo {
+            width: 78%; 
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; 
+            text-align: left;        
+        }
+
+        .division .titulo-bebida {
+            margin-top: 26px; 
+            font-size: 1.15rem; 
+            font-weight: 400;
+            color: #1a1816; 
+            font-family: "Nixie One", system-ui;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .precio-menu {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.05rem; 
+            color: #594f45; 
+            margin-top: 8px;
+            font-weight: 400;
+            letter-spacing: 1.2px;
+        }
+
+        /* --- SECCIÓN RECUADRO CON ONDAS --- */
+        .contenedor-temporada {
+            position: relative;
+            width: 100%;
+            margin-top: 140px; 
+            padding-bottom: 100px;
+            background-color: #fcc7a15e;
+        }
+
+        .onditas-superior {
+            position: absolute;
+            top: -99px; 
+            left: 0;
+            width: 100%;
+            height: 100px;
+            overflow: hidden;
+            line-height: 0;
+            z-index: 1;
+        }
+
+        .onditas-superior svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 100px;
+        }
+
+        .onditas-superior .shape-fill {
+            fill: #fcc7a15e;
+        }
+
+        .contenido-temporada {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 20px 20px 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .titulo-temporada {
+            text-align: center;
+            font-family: 'Corinthia', cursive;
+            font-size: clamp(4rem, 8vw, 7rem);
+            color: #aa651fb7; 
+            margin-bottom: 50px;
+            font-weight: 400;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+        }
+
+        .contenedor-temporada .division {
+            background-color: rgba(227, 152, 77, 0.115); 
+            border: 1px solid rgba(107, 88, 58, 0.15);
+            box-shadow: 0 4px 15px rgba(107, 88, 58, 0.05);
+        }
+
+        .contenedor-temporada .division .titulo-bebida {
+            color: #6b583a; 
+            font-weight: 500;
+        }
+
+        .contenedor-temporada .precio-menu {
+            color: #8c7653;
+        }
+
+        .contenedor-temporada .division:hover {
+            background-color: #ffffff;
+            border-color: rgba(107, 88, 58, 0.3);
+            box-shadow: 
+                0 15px 35px rgba(107, 88, 58, 0.12), 
+                0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        .contenedor-temporada .division:hover .titulo-bebida {
+            color: #4a3a21; 
+        }
+
+        /* --- BOTÓN MENÚ BEBIDAS --- */
+        .contenedor-boton {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 70px;
+        }
+
+        .btn-bebidas {
+            font-family: "Nixie One", system-ui;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #000000; 
+            background-color: transparent; 
+            padding: 15px 40px;
+            border: 1px solid #5b5a5a; 
+            border-radius: 50px; 
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-bebidas:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .portada { height: auto; aspect-ratio: 16 / 9; padding-left: 8%; }
+            .contenedor-texto { margin-top: -4vh; gap: 1.5vw; }
+            .introduccion-menu { margin: 50px auto 35px auto; }
+            .seccion-menu { padding: 0 15px 20px 15px; }
+            .grid-recuadros { grid-template-columns: repeat(3, 1fr); gap: 15px; }
+            .division { padding: 25px 12px; border-radius: 10px; }
+            .division img { width: 78%; }
+            .info-platillo { width: 78%; }
+            .division .titulo-bebida { font-size: 0.78rem; margin-top: 16px; letter-spacing: 1px; }
+            .precio-menu { font-size: 0.72rem; margin-top: 5px; }
+            
+            .contenedor-temporada { margin-top: 80px; padding-bottom: 60px; }
+            .onditas-superior { top: -49px; height: 50px; }
+            .onditas-superior svg { height: 50px; }
+            .titulo-temporada { margin-bottom: 30px; }
+            .contenedor-boton { margin-top: 40px; }
+            .btn-bebidas { font-size: 0.8rem; padding: 12px 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CAPA DE ANIMACIÓN DE ENTRADA CORREGIDA (MÁS SUAVE Y PROGRESIVA) -->
+    <div class="pantalla-entrada"></div>
+
+    <div class="pergola-shadow"></div>
+
+    <div class="contenido-principal" id="contenidoMenu">
+        <!-- Portada Principal -->
+        <section class="portada">
+            <div class="contenedor-texto">
+                <h1 class="texto-casa" id="animar-casa">Casa</h1>
+                <h2 class="texto-valencia" id="animar-valencia">Valencia</h2>
+                <p class="texto-viernes" id="animar-viernes">¡Viernes de donas!</p>
+            </div>
+        </section>
+
+        <!-- Presentación del Menú del Día -->
+        <div class="introduccion-menu">
+            <h3 class="titulo-menu-dia" id="titulo-dinamico">Menú del Día</h3>
+            <p class="bienvenida-menu">
+                Te damos una cálida bienvenida a nuestra exclusiva selección del día de hoy. Déjate tentar por una variedad artesanal donde la suavidad de nuestra masa tradicional se encuentra con coberturas premium e ingredientes minuciosamente seleccionados para transformar tu viernes en una experiencia verdaderamente inolvidable.
+            </p>
+        </div>
+
+        <!-- Grid 1: Menú Regular (6 Donas) -->
+        <section class="seccion-menu" id="menu">
+            <div class="grid-recuadros">
+                <div class="division">
+                    <img src='imagenes/dona_chocolate.png' alt="Dona de Chocolate">
+                    <div class="info-platillo">
+                        <p class="titulo-bebida">chocolate </p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+                </div>
+
+                <div class="division">
+                    <img src='imagenes/dona_glaseada.png' alt="Dona Glaseada">
+                    <div class="info-platillo">
+                        <p class="titulo-bebida">glaseada</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+                </div>
+
+                <div class="division">
+                    <img src='imagenes/dona_frutos_rojos.png' alt="Dona de Frutos Rojos">
+                    <div class="info-platillo">
+                        <p class="titulo-bebida">Frutos Rojos</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+                </div>
+
+                <div class="division">
+                    <img src='imagenes/dona_pistache.png' alt="Dona de Pistache">
+                    <div class="info-platillo">
+                        <p class="titulo-bebida">Pistache</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+                </div>
+                
+                <div class="division">
+                    <img src='imagenes/dona_chocolate_blanco.png' alt="Dona de Chocolate Blanco">
+                    <div class="info-platillo">
+                        <p class="titulo-bebida">chocolate blanco</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+                </div>
+
+                <div class="division">
+                    <img src='imagenes/dona_caramelo.png' alt="Dona de Caramelo">
+                    <div class="info-platillo">
+                        <p class="titulo-bebida">Caramelo</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE TEMPORADA -->
+        <div class="contenedor-temporada">
+            <div class="onditas-superior">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,120H1200V42.4C1113,-14.3 989.5,25 883.8,55.8C849.2,67.3 815.5,79.2 792.4,85.2C721.3,97 652.3,90.1 583,72.1C512.3,53.7 438.6,32.4 361.8,36.8C291.3,41 225.4,68.9 158,74.3C103.6,78.5 47.8,68.5 0,46.3V120Z" class="shape-fill"></path>
+                </svg>
+            </div>
+
+            <div class="contenido-temporada">
+                <h3 class="titulo-temporada">Donas de Temporada</h3>
+                
+                <!-- Grid 2: Menú de Temporada -->
+                <div class="grid-recuadros">
+                    <div class="division">
+                        <img src='imagenes/dona_mexico.png' alt="Dona de Temporada 1">
+                        <div class="info-platillo">
+                            <p class="titulo-bebida">México</p>
+                            <p class="precio-menu">$40</p>
+                        </div>
+                    </div>
+
+                    <div class="division">
+                        <img src='imagenes/dona_argetina.png' alt="Dona de Temporada 2">
+                        <div class="info-platillo">
+                            <p class="titulo-bebida">argentina</p>
+                            <p class="precio-menu">$40</p>
+                        </div>
+                    </div>
+
+                    <div class="division">
+                        <img src='imagenes/dona_colombia.png' alt="Dona de Temporada 3">
+                        <div class="info-platillo">
+                            <p class="titulo-bebida">colombia</p>
+                            <p class="precio-menu">$40</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTÓN: MENÚ BEBIDAS -->
+                <div class="contenedor-boton">
+                    <a href="casa_balencia.html?saltar=true" class="btn-bebidas">Menú Bebidas</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const pantallaEntrada = document.querySelector('.pantalla-entrada');
+            
+            // Iniciamos la desaparición con un pequeño retraso estratégico
+            setTimeout(() => {
+                pantallaEntrada.classList.add('desvanecer');
+            }, 150); 
+
+            prepararYAnimarTexto();
+            inicializarLuzScroll();
+        });
+
+        function inicializarLuzScroll() {
+            const tituloMenu = document.getElementById('titulo-dinamico');
+            
+            const opciones = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('iluminado'); 
+                    } else {
+                        entry.target.classList.remove('iluminado'); 
+                    }
+                });
+            }, opciones);
+
+            observer.observe(tituloMenu);
+        }
+
+        function prepararYAnimarTexto() {
+            const tCasa = document.getElementById('animar-casa');
+            const tValencia = document.getElementById('animar-valencia');
+            const tViernes = document.getElementById('animar-viernes');
+
+            function formatearTexto(elemento) {
+                const textoOriginal = elemento.innerText;
+                elemento.innerHTML = ''; 
+                return [...textoOriginal].map(letra => {
+                    const span = document.createElement('span');
+                    span.innerText = letra;
+                    span.className = 'letra-oculta';
+                    elemento.appendChild(span);
+                    return span;
+                });
+            }
+
+            const spansCasa = formatearTexto(tCasa);
+            const spansValencia = formatearTexto(tValencia);
+            const spansViernes = formatearTexto(tViernes);
+            
+            const retrasoLetra = 85; 
+
+            function revelarGrupo(spans, indice, callbackSiguiente) {
+                if (indice < spans.length) {
+                    spans[indice].classList.add('letra-visible');
+                    setTimeout(() => revelarGrupo(spans, indice + 1, callbackSiguiente), retrasoLetra);
+                } else if (callbackSiguiente) {
+                    setTimeout(callbackSiguiente, 180); 
+                }
+            }
+
+            // Sincronización refinada: el texto empieza a revelarse a los 900ms, 
+            // justo cuando la neblina blanca se ha aclarado lo suficiente para generar un efecto mágico.
+            setTimeout(() => {
+                revelarGrupo(spansCasa, 0, () => {
+                    revelarGrupo(spansValencia, 0, () => {
+                        revelarGrupo(spansViernes, 0, null);
+                    });
+                });
+            }, 900);
+        }
+    </script>
+</body>
+</html>
