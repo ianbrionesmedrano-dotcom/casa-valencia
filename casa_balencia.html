@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&family=Lavishly+Yours&family=Nixie+One&family=Tangerine:wght@400;700&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
+    
+    <title>Casa Valencia - Catálogo Editorial</title>
+    <style>
+        /* --- ESTILOS GENERALES (DISEÑO DE REVISTA IMPRESA) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #e4ddb5;
+            background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 0);
+            background-size: 5px 5px;
+            color: #1f1a17;
+            font-family: 'Georgia', serif; 
+            overflow-x: hidden;
+        }
+
+        /* --- CAPAS DE LA PORTADA PRINCIPAL Y FLUJO --- */
+        .bienvenida {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('imagenes/imagen casa valencia mejorada.png'); 
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; 
+            align-items: center;
+            padding-bottom: 120px;
+            z-index: 20;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .btn-ver-menu {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 50px; 
+            padding: 14px 36px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-ver-menu:hover {
+            background: #ffffff;
+            color: #000000;
+            transform: scale(1.05);
+        }
+
+        .contenido-principal {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease 0.4s; 
+        }
+
+        .contenido-principal.activo {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .transicion-blanca {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 30;
+            transition: opacity 0.25s ease-in-out;
+        }
+
+        .transicion-blanca.activo {
+            opacity: 1;
+        }
+
+        /* --- SECCIÓN 1: PORTADA ORIGINAL --- */
+        .portada {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background-image: url('imagenes/imagen_portada_resolucion.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            transition: height 0.3s ease, background-size 0.3s ease;
+        }
+
+        .contenedor-texto {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            align-items: center;
+            gap: 10vw; 
+            width: 100%;
+            padding: 0 20px; 
+            box-sizing: border-box;
+        }
+
+        .texto-casa {
+            font-size: clamp(1.4rem, 6vw, 5rem); 
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 400;
+            font-family: 'Times New Roman', Times, serif;
+            text-align: center;
+            position: relative;
+            left: 3vw; 
+        }
+
+        .texto-valencia {
+            font-size: clamp(1.4rem, 6vw, 5rem); 
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 300;
+            font-family: "Nixie One", system-ui;
+            text-align: center;
+            color: #ffffff;
+            position: relative; 
+            left: 14vw; 
+        }
+
+        .letra-oculta {
+            opacity: 0;
+            transition: opacity 0.1s ease;
+        }
+
+        /* --- CONTENEDOR CON PERSPECTIVA TRIDIMENSIONAL DE REVISTA --- */
+        .seccion-menu {
+            padding: 130px 20px 100px 20px; 
+            max-width: 1200px;
+            margin: 0 auto;
+            perspective: 1600px; 
+        }
+
+        .contenedor-menu-blanco {
+            background-color: #faf8f5; 
+            border-radius: 0px; 
+            padding: 40px;
+            transform: rotateX(3deg) rotateY(-3deg) rotateZ(1.5deg);
+            transform-style: preserve-3d;
+            box-shadow: 
+                35px 35px 55px rgba(45, 35, 25, 0.25),
+                15px 15px 20px rgba(45, 35, 25, 0.12);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .contenedor-menu-blanco:hover {
+                transform: rotateX(2deg) rotateY(-2deg) rotateZ(0.8deg) translateY(-8px);
+                box-shadow: 
+                    45px 45px 65px rgba(45, 35, 25, 0.3),
+                    20px 20px 25px rgba(45, 35, 25, 0.15);
+            }
+        }
+
+        .grid-recuadros {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            position: relative;
+        }
+
+        .division {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .division[onclick]:hover {
+            background-color: rgba(0, 0, 0, 0.015); 
+        }
+
+        .division img {
+            width: 80%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 4px; 
+            filter: grayscale(10%) sepia(8%); 
+        }
+
+        .division .titulo-bebida {
+            margin-top: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f1a17;
+            font-family: 'Times New Roman', Times, serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .precio-menu {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.95rem;
+            color: #8c857b;
+            margin-top: 4px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+       .division.texto-destacado {
+            cursor: default;
+            pointer-events: none; 
+            padding: 40px 24px;
+            background-color: #fffaf5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .texto-destacado h3 {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: #a04c1f; 
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+            font-family: "Nixie One", system-ui;
+            line-height: 1.1;
+        }
+
+        .texto-destacado .subtitulo {
+            font-size: 0.7rem;
+            color: #5e5a57;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .texto-destacado .descripcion-larga {
+            font-size: 0.8rem; 
+            color: #6b6661;
+            line-height: 1.6;
+            font-style: normal;
+            max-width: 90%;
+            font-family: 'Georgia', serif;
+        }
+
+        /* --- LÍNEAS DIVISORIAS --- */
+        .division:not(:nth-child(3n))::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 25%;
+            height: 50%; 
+            width: 1px;
+            background-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .division:nth-child(-n+6)::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 25%; 
+            width: 50%; 
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.08);
+        }
+
+        /* --- ESTILOS DEL RECUADRO DE IMAGEN BAJO EL MENÚ --- */
+        .contenedor-imagen-inferior {
+            max-width: 1200px;
+            margin: 0 auto 100px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .marco-imagen-editorial {
+            width: 100%;
+            height: 500px; 
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(45, 35, 25, 0.15);
+            cursor: pointer; 
+            user-select: none; 
+        }
+
+        .marco-imagen-editorial img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center center;
+            filter: grayscale(5%) sepia(4%);
+            display: block;
+        }
+
+        /* Ventana Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 22, 19, 0.45); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 2000; 
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-ventana {
+            background: #faf8f5; 
+            border: 1px solid #d4ceaa;
+            outline: 10px solid #faf8f5; 
+            border-radius: 0px; 
+            width: 100%;
+            max-width: 440px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            transform: translateY(30px) scale(0.96);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .modal-overlay.active .modal-ventana {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-ventana img {
+            width: 100%;
+            height: 310px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 20px auto;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            filter: grayscale(3%) sepia(5%);
+        }
+
+        .modal-ventana h3 {
+            font-size: 1.6rem;
+            font-family: "Nixie One", system-ui;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #2d2319; 
+            font-weight: 400;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .modal-ventana-precio {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.15rem;
+            color: #a04c1f; 
+            letter-spacing: 2px;
+            margin-top: 8px;
+            margin-bottom: 5px;
+            display: inline-block;
+            position: relative;
+            padding-top: 6px;
+        }
+
+        .modal-ventana-precio::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 25%;
+            width: 50%;
+            height: 1px;
+            background-color: rgba(45, 35, 25, 0.15);
+        }
+
+        .btn-cerrar {
+            position: absolute;
+            top: -22px;
+            right: -22px;
+            font-size: 1.3rem;
+            line-height: 1;
+            background: #faf8f5;
+            border: 1px solid #d4ceaa;
+            color: #2d2319;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            transition: all 0.25s ease;
+            z-index: 2100; 
+        }
+
+        .btn-cerrar:hover {
+            background: #2d2319;
+            color: #faf8f5;
+            transform: scale(1.1);
+        }
+
+        /* --- PANTALLA VIERNES DE DONAS (Z-INDEX Y CAPAS PROFUNDAS) --- */
+        .pantalla-viernes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #FFF0F5; 
+            z-index: 5000; 
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .pantalla-viernes.activada {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Capa de texto en un nivel intermedio (5150) */
+        .texto-viernes {
+            position: relative;
+            font-family: 'WindSong', cursive; 
+            font-size: clamp(3rem, 10vw, 6.5rem); 
+            color: #5C4033; 
+            text-align: center;
+            z-index: 5150; /* Capa intermedia */
+            text-shadow: 0 2px 8px rgba(92, 64, 51, 0.1); 
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            line-height: 1.1;
+            text-transform: none; 
+        }
+
+        .linea-texto-viernes {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .letra-viernes {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .letra-viernes.revelada {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Donas cayendo con capas dinámicas */
+        .dona-cayendo {
+            position: absolute;
+            top: -120px;
+            user-select: none;
+            pointer-events: none;
+            animation: caída-loca linear forwards;
+        }
+
+        /* Clases de profundidad controladas desde JS */
+        .dona-al-frente { z-index: 5200; } /* Pasa por enfrente del texto */
+        .dona-atras { z-index: 5100; }     /* Pasa por detrás del texto */
+
+        @keyframes caída-loca {
+            0% { top: -120px; transform: rotate(0deg); }
+            100% { top: 105vh; transform: rotate(540deg); }
+        }
+
+        /* --- BOTÓN PROVISIONAL DE PRUEBA (BOTÓN TESTER) --- */
+        .btn-probar-viernes {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 6000; 
+            background-color: #a04c1f;
+            color: #ffffff;
+            border: 1px solid #faf8f5;
+            padding: 10px 18px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-probar-viernes:hover {
+            background-color: #2d2319;
+            transform: translateY(-3px);
+        }
+
+        /* --- RESPONSIVE ADAPTATIVO MÓVILES --- */
+        @media (max-width: 768px) {
+            .portada { height: auto; aspect-ratio: 16 / 9; background-position: top center; background-size: cover; display: flex; justify-content: center; align-items: center; }
+            .texto-casa, .texto-valencia { font-size: clamp(1.1rem, 4.8vw, 2.5rem) !important; }
+            .texto-casa { top: -1.5vh; left: 1.5vw !important; }
+            .texto-valencia { top: 1.5vh; }
+            .seccion-menu { padding: 45px 18px 40px 10px; perspective: 1200px; }
+            .contenedor-menu-blanco { transition: transform 0.1s ease-out, box-shadow 0.1s ease-out; padding: 18px 8px; }
+            .division { padding: 12px 3px; }
+            .division img { width: 88%; border-radius: 2px; }
+            .division .titulo-bebida { font-size: 0.72rem; margin-top: 8px; }
+            .precio-menu { font-size: 0.65rem; margin-top: 2px; }
+            .texto-destacado { padding: 12px 4px !important; }
+            .texto-destacado h3 { font-size: 0.8rem; letter-spacing: 0.5px; }
+            .texto-destacado .subtitulo { font-size: 0.55rem; margin-bottom: 3px; }
+            .texto-destacado .descripcion-larga { font-size: 0.55rem; line-height: 1.25; }
+            .contenedor-imagen-inferior { padding: 0px; margin-bottom: 40px; }
+            .marco-imagen-editorial { height: auto; border-radius: 0px; box-shadow: none; }
+            .marco-imagen-editorial img { width: 100%; height: auto; object-fit: contain; }
+            .modal-ventana { padding: 15px; outline: 6px solid #faf8f5; width: 90%; }
+            .modal-ventana img { height: 230px; margin-bottom: 12px; }
+            .modal-ventana h3 { font-size: 1.2rem; letter-spacing: 3px; }
+            .modal-ventana-precio { font-size: 0.95rem; margin-top: 5px; }
+            .btn-cerrar { top: -15px; right: -15px; width: 32px; height: 32px; font-size: 1.1rem; }
+            .btn-probar-viernes { bottom: 10px; right: 10px; padding: 8px 12px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CAPA DE ANIMACIÓN VIERNES DE DONAS -->
+    <div class="pantalla-viernes" id="capaViernes">
+        <h1 class="texto-viernes" id="tituloViernes"></h1>
+    </div>
+
+    <!-- BOTÓN PROVISIONAL PARA PROBAR EL EVENTO CUALQUIER DÍA -->
+    <button class="btn-probar-viernes" onclick="forzarEfectoViernes()">Probar Viernes de Donas 🍩</button>
+
+    <section class="bienvenida" id="pantallaBienvenida">
+        <button class="btn-ver-menu" id="btnVerMenu">Ver Menú</button>
+    </section>
+
+    <div class="transicion-blanca" id="capaTransicion"></div>
+
+    <div class="contenido-principal" id="contenidoMenu">
+        <section class="portada">
+            <div class="contenedor-texto">
+                <h1 class="texto-casa" id="animar-casa">Casa</h1>
+                <h2 class="texto-valencia" id="animar-valencia">Valencia</h2>
+            </div>
+        </section>
+
+       <section class="seccion-menu">
+            <div class="contenedor-menu-blanco" id="recuadroRevista">
+                <div class="grid-recuadros">
+                    
+                    <div class="division" onclick="abrirModal('imagenes/mango.png', 'Agua de Mango')">
+                        <img src="imagenes/mango.png" alt="Mango">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>Mango</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                    <div class="division texto-destacado">
+                        <h3>Casa Valencia</h3>
+                        <p class="subtitulo">nuestro menú de bebidas frescas</p>
+                        <p class="descripcion-larga">Disfruta de una cuidadosa selección de recetas tradicionales...</p>
+                    </div>
+
+                    <div class="division" onclick="abrirModal('imagenes/limon con menta.png', 'Limón Menta')">
+                        <img src="imagenes/limon con menta.png" alt="Limón con Menta">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>Limón Menta</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                    <div class="division" onclick="abrirModal('imagenes/tamarindo.png', 'Tamarindo')">
+                        <img src="imagenes/tamarindo.png" alt="Tamarindo">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>Tamarindo</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                    <div class="division" onclick="abrirModal('imagenes/sandia.png', 'Sandía')">
+                        <img src="imagenes/sandia.png" alt="Sandía">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>Sandía</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                    <div class="division" onclick="abrirModal('imagenes/melon.png', 'Melón')">
+                        <img src="imagenes/melon.png" alt="Melón">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>Melón</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                    <div class="division" onclick="abrirModal('imagenes/fresa kiwi.png', 'Fresa kiwi')">
+                        <img src="imagenes/fresa kiwi.png" alt="Fresa kiwi">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>Fresa kiwi</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                    <div class="division" onclick="abrirModal('imagenes/piña coco.png', 'Piña Coco')">
+                        <img src="imagenes/piña coco.png" alt="Piña Coco">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>Piña Coco</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                    <div class="division" onclick="abrirModal('imagenes/maracuya.png', 'Maracuyá')">
+                        <img src="imagenes/maracuya.png" alt="maracuya">
+                        <p class="titulo-bebida" style='font-family: "Nixie One", system-ui;'>maracuya</p>
+                        <p class="precio-menu">$35</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div class="contenedor-imagen-inferior">
+            <div class="marco-imagen-editorial" id="contenedorDonas">
+                <img src="imagenes/donas perfil.png" alt="Donas Casa Valencia" id="imagenDonas" data-actual="perfil">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="cerrarModalExterno(event)">
+        <div class="modal-ventana">
+            <button class="btn-cerrar" onclick="cerrarModal()">&times;</button>
+            <img id="modalImg" src="" alt="Imagen Ampliada">
+            <h3 id="modalTitulo">Título</h3>
+            <span class="modal-ventana-precio">$35.00</span>
+        </div>
+    </div>
+
+    <script>
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitulo = document.getElementById('modalTitulo');
+        const recuadroRevista = document.getElementById('recuadroRevista');
+
+        const btnVerMenu = document.getElementById('btnVerMenu');
+        const pantallaBienvenida = document.getElementById('pantallaBienvenida');
+        const capaTransicion = document.getElementById('capaTransicion');
+        const contenidoMenu = document.getElementById('contenidoMenu');
+
+        const contenedorDonas = document.getElementById('contenedorDonas');
+        const imagenDonas = document.getElementById('imagenDonas');
+        const capaViernes = document.getElementById('capaViernes');
+        const tituloViernes = document.getElementById('tituloViernes');
+
+        const imagenesDonasCayendo = [
+            'imagenes/dona_chocolate.png',
+            'imagenes/dona_glaseada.png',
+            'imagenes/dona_frutos_rojos.png',
+            'imagenes/dona_pistache.png',
+            'imagenes/dona_chocolate_blanco.png',
+            'imagenes/dona_caramelo.png'
+        ];
+
+        const hoy = new Date();
+        const esViernes = hoy.getDay() === 5;
+        const urlParams = new URLSearchParams(window.location.search);
+
+        function mostrarMenuDirecto(conAnimacion) {
+            // FLUJO ESPECIAL LOS VIERNES: Muestra la portada, pero al dar clic salta a la animación de donas
+            if (esViernes && urlParams.get('saltar') !== 'true') {
+                if (conAnimacion) {
+                    capaTransicion.classList.add('activo');
+                    setTimeout(() => {
+                        pantallaBienvenida.style.display = 'none';
+                        ejecutarAnimacionDonas();
+                        capaTransicion.classList.remove('activo');
+                    }, 250);
+                } else {
+                    pantallaBienvenida.style.display = 'none';
+                    ejecutarAnimacionDonas();
+                }
+                return; // Frena el flujo para que el menú de bebidas no aparezca de fondo
+            }
+
+            // FLUJO NORMAL (SÁBADO A JUEVES, o si regresa de las donas con ?saltar=true)
+            if (conAnimacion) {
+                capaTransicion.classList.add('activo');
+                setTimeout(() => {
+                    pantallaBienvenida.style.display = 'none';
+                    contenidoMenu.classList.add('activo');
+                    actualizarEfecto3DScroll();
+                    capaTransicion.classList.remove('activo');
+                    setTimeout(() => { prepararYAnimarTexto(); }, 350); 
+                }, 250); 
+            } else {
+                pantallaBienvenida.style.display = 'none';
+                contenidoMenu.classList.add('activo');
+                actualizarEfecto3DScroll();
+                prepararYAnimarTexto();
+            }
+        }
+
+        function evaluarEventoViernesAlCargar() {
+            // Si regresa desde la página de donas mediante el parámetro especial (?saltar=true)
+            if (urlParams.get('saltar') === 'true') { 
+                mostrarMenuDirecto(false); 
+            }
+        }
+
+        function ejecutarAnimacionDonas() {
+            prepararTextoEnLineas(["Viernes", "de", "Donas"]);
+            
+            capaViernes.classList.add('activada');
+            animarLetrasViernes();
+
+            // Tormenta masiva e interactiva de donas
+            const intervaloLluvia = setInterval(crearDonaFlotante, 35);
+
+            // TRANSICIÓN PERFECTA: Redirigimos manteniendo la pantalla rosa 100% opaca
+            setTimeout(() => {
+                clearInterval(intervaloLluvia);
+                window.location.href = 'viernes_donas.html';
+            }, 4500); 
+        }
+
+        function forzarEfectoViernes() {
+            ejecutarAnimacionDonas();
+        }
+
+        function prepararTextoEnLineas(lineasArreglo) {
+            tituloViernes.innerHTML = '';
+            
+            lineasArreglo.forEach(textoLinea => {
+                const divLinea = document.createElement('div');
+                divLinea.className = 'linea-texto-viernes';
+                
+                [...textoLinea].forEach(letra => {
+                    const spanLetra = document.createElement('span');
+                    spanLetra.innerText = letra;
+                    spanLetra.className = 'letra-viernes';
+                    divLinea.appendChild(spanLetra);
+                });
+                
+                tituloViernes.appendChild(divLinea);
+            });
+        }
+
+        function animarLetrasViernes() {
+            const letras = document.querySelectorAll('.letra-viernes');
+            letras.forEach((letra, indice) => {
+                setTimeout(() => {
+                    letra.classList.add('revelada');
+                }, indice * 60); 
+            });
+        }
+
+        function crearDonaFlotante() {
+            const dona = document.createElement('img');
+            const imagenAleatoria = imagenesDonasCayendo[Math.floor(Math.random() * imagenesDonasCayendo.length)];
+            dona.src = imagenAleatoria;
+            
+            // EFECTO DE CAPAS 3D: el 35% de las donas caen por detrás del texto de forma sutil
+            const pasaPorAtras = Math.random() < 0.35; 
+            dona.className = pasaPorAtras ? 'dona-cayendo dona-atras' : 'dona-cayendo dona-al-frente';
+            
+            const tamaño = Math.floor(Math.random() * 65) + 35; 
+            dona.style.width = `${tamaño}px`;
+            dona.style.height = 'auto';
+            dona.style.left = `${Math.random() * 100}vw`;
+            
+            const duracionCaida = (Math.random() * 1.8) + 1.5; 
+            dona.style.animationDuration = `${duracionCaida}s`;
+            dona.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            capaViernes.appendChild(dona);
+
+            setTimeout(() => { dona.remove(); }, duracionCaida * 1000);
+        }
+
+        // Acciones del botón de la Portada
+        btnVerMenu.addEventListener('click', () => { mostrarMenuDirecto(true); });
+
+        // Verificación inicial al cargar la página
+        evaluarEventoViernesAlCargar();
+
+        // Control del banner inferior intercambiable
+        contenedorDonas.addEventListener('click', () => {
+            const estadoActual = imagenDonas.getAttribute('data-actual');
+            if (estadoActual === 'perfil') {
+                imagenDonas.src = 'imagenes/donas recuadro.png';
+                imagenDonas.setAttribute('data-actual', 'recuadro');
+            } else {
+                imagenDonas.src = 'imagenes/donas perfil.png';
+                imagenDonas.setAttribute('data-actual', 'perfil');
+            }
+        });
+
+        function abrirModal(rutaImagen, titulo) {
+            modalImg.src = rutaImagen;
+            modalTitulo.innerText = titulo;
+            modalOverlay.classList.add('active');
+        }
+
+        function cerrarModal() { modalOverlay.classList.remove('active'); }
+        function cerrarModalExterno(event) { if (event.target === modalOverlay) { cerrarModal(); } }
+
+        function actualizarEfecto3DScroll() {
+            if (window.innerWidth <= 768 && contenidoMenu.classList.contains('activo')) {
+                const rect = recuadroRevista.getBoundingClientRect();
+                const viewHeight = window.innerHeight;
+                const centroElemento = rect.top + rect.height / 2;
+                const centroPantalla = viewHeight / 2;
+                const distancia = (centroElemento - centroPantalla) / (viewHeight / 2);
+                const factorClampeado = Math.max(-1, Math.min(1, distancia));
+                const rotacionX = 5 - (factorClampeado * 4); 
+                const rotacionY = -5 + (factorClampeado * 4); 
+                const rotacionZ = 1 + (factorClampeado * 0.5); 
+                const elevacion = -12 * (1 - Math.abs(factorClampeado)); 
+                recuadroRevista.style.transform = `rotateX(${rotacionX}deg) rotateY(${rotacionY}deg) rotateZ(${rotacionZ}deg) translateY(${elevacion}px)`;
+                const tamanoSombra = 20 + (16 * (1 - Math.abs(factorClampeado)));
+                const opacidadSombra = 0.22 + (0.08 * (1 - Math.abs(factorClampeado)));
+                recuadroRevista.style.boxShadow = `
+                    ${tamanoSombra}px ${tamanoSombra}px 38px rgba(45, 35, 25, ${opacidadSombra}),
+                    6px 6px 12px rgba(45, 35, 25, 0.1)
+                `;
+            } else {
+                recuadroRevista.style.transform = '';
+                recuadroRevista.style.boxShadow = '';
+            }
+        }
+
+        function prepararYAnimarTexto() {
+            const tCasa = document.getElementById('animar-casa');
+            const tValencia = document.getElementById('animar-valencia');
+
+            function formatearTexto(elemento) {
+                const textoOriginal = elemento.innerText;
+                elemento.innerHTML = ''; 
+                return [...textoOriginal].map(letra => {
+                    const span = document.createElement('span');
+                    span.innerText = letra;
+                    span.className = 'letra-oculta';
+                    elemento.appendChild(span);
+                    return span;
+                });
+            }
+
+            const spansCasa = formatearTexto(tCasa);
+            const spansValencia = formatearTexto(tValencia);
+            const velocidad = 140; 
+
+            function revelarCasa(indice = 0) {
+                if (indice < spansCasa.length) {
+                    spansCasa[indice].style.opacity = '1';
+                    setTimeout(() => revelarCasa(indice + 1), velocidad);
+                } else {
+                    setTimeout(() => revelarValencia(0), 200);
+                }
+            }
+
+            function revelarValencia(indice = 0) {
+                if (indice < spansValencia.length) {
+                    spansValencia[indice].style.opacity = '1';
+                    setTimeout(() => revelarValencia(indice + 1), velocidad);
+                }
+            }
+            revelarCasa();
+        }
+
+        window.addEventListener('scroll', actualizarEfecto3DScroll, { passive: true });
+        window.addEventListener('resize', actualizarEfecto3DScroll);
+    </script>
+</body>
+</html>
