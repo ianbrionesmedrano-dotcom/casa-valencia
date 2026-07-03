@@ -32,6 +32,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
+            height: 100dvh; 
             background-image: url('imagenes/imagen casa valencia mejorada.png'); 
             background-repeat: no-repeat;
             background-position: center center;
@@ -83,6 +84,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
+            height: 100dvh;
             background-color: #ffffff;
             opacity: 0;
             pointer-events: none;
@@ -105,44 +107,44 @@
             background-size: cover; 
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; 
             text-align: center;
             color: white;
-            transition: height 0.3s ease, background-size 0.3s ease;
         }
 
         .contenedor-texto {
             display: flex;
-            flex-direction: row; 
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
-            gap: 10vw; 
+            gap: 8px; 
             width: 100%;
             padding: 0 20px; 
             box-sizing: border-box;
+            /* Ambos textos juntos un poco más arriba (cambió de 22vh/15vh a 10vh) */
+            transform: translateY(10vh); 
         }
 
         .texto-casa {
-            font-size: clamp(1.4rem, 6vw, 5rem); 
+            font-size: clamp(1.4rem, 5vw, 3.5rem); 
             text-transform: uppercase;
             letter-spacing: 4px;
             font-weight: 400;
             font-family: 'Times New Roman', Times, serif;
             text-align: center;
-            position: relative;
-            left: 3vw; 
         }
 
         .texto-valencia {
-            font-size: clamp(1.4rem, 6vw, 5rem); 
+            font-size: clamp(1.4rem, 5vw, 3.5rem); 
             text-transform: uppercase;
             letter-spacing: 4px;
             font-weight: 300;
             font-family: "Nixie One", system-ui;
             text-align: center;
             color: #ffffff;
-            position: relative; 
-            left: 14vw; 
+            /* Mueve solo la palabra Valencia un poquitito a la derecha de forma sutil */
+            transform: translateX(15px); 
+            display: inline-block;
         }
 
         .letra-oculta {
@@ -432,13 +434,14 @@
             transform: scale(1.1);
         }
 
-        /* --- PANTALLA VIERNES DE DONAS (Z-INDEX Y CAPAS PROFUNDAS) --- */
+        /* --- PANTALLA VIERNES DE DONAS --- */
         .pantalla-viernes {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
+            height: 100dvh; 
             background-color: #FFF0F5; 
             z-index: 5000; 
             opacity: 0;
@@ -454,14 +457,13 @@
             pointer-events: auto;
         }
 
-        /* Capa de texto en un nivel intermedio (5150) */
         .texto-viernes {
             position: relative;
             font-family: 'WindSong', cursive; 
             font-size: clamp(3rem, 10vw, 6.5rem); 
             color: #5C4033; 
             text-align: center;
-            z-index: 5150; /* Capa intermedia */
+            z-index: 5150; 
             text-shadow: 0 2px 8px rgba(92, 64, 51, 0.1); 
             display: flex;
             flex-direction: column; 
@@ -490,25 +492,23 @@
             transform: translateY(0);
         }
 
-        /* Donas cayendo con capas dinámicas */
+        /* Donas cayendo */
         .dona-cayendo {
             position: absolute;
-            top: -120px;
             user-select: none;
             pointer-events: none;
             animation: caída-loca linear forwards;
         }
 
-        /* Clases de profundidad controladas desde JS */
-        .dona-al-frente { z-index: 5200; } /* Pasa por enfrente del texto */
-        .dona-atras { z-index: 5100; }     /* Pasa por detrás del texto */
+        .dona-al-frente { z-index: 5200; } 
+        .dona-atras { z-index: 5100; }     
 
         @keyframes caída-loca {
-            0% { top: -120px; transform: rotate(0deg); }
-            100% { top: 105vh; transform: rotate(540deg); }
+            0% { top: -150px; transform: rotate(0deg); } 
+            100% { top: 110vh; top: 110dvh; transform: rotate(540deg); }
         }
 
-        /* --- BOTÓN PROVISIONAL DE PRUEBA (BOTÓN TESTER) --- */
+        /* --- BOTÓN PROVISIONAL DE PRUEBA --- */
         .btn-probar-viernes {
             position: fixed;
             bottom: 20px;
@@ -534,10 +534,19 @@
 
         /* --- RESPONSIVE ADAPTATIVO MÓVILES --- */
         @media (max-width: 768px) {
-            .portada { height: auto; aspect-ratio: 16 / 9; background-position: top center; background-size: cover; display: flex; justify-content: center; align-items: center; }
-            .texto-casa, .texto-valencia { font-size: clamp(1.1rem, 4.8vw, 2.5rem) !important; }
-            .texto-casa { top: -1.5vh; left: 1.5vw !important; }
-            .texto-valencia { top: 1.5vh; }
+            .bienvenida {
+                height: 100vh;
+                height: 100dvh; 
+                background-position: center center;
+                background-size: cover;
+                padding-bottom: 80px;
+            }
+            .contenedor-texto {
+                transform: translateY(8vh); 
+            }
+            .texto-valencia {
+                transform: translateX(8px); /* Desfase un poco menor en pantallas chicas */
+            }
             .seccion-menu { padding: 45px 18px 40px 10px; perspective: 1200px; }
             .contenedor-menu-blanco { transition: transform 0.1s ease-out, box-shadow 0.1s ease-out; padding: 18px 8px; }
             .division { padding: 12px 3px; }
@@ -548,9 +557,22 @@
             .texto-destacado h3 { font-size: 0.8rem; letter-spacing: 0.5px; }
             .texto-destacado .subtitulo { font-size: 0.55rem; margin-bottom: 3px; }
             .texto-destacado .descripcion-larga { font-size: 0.55rem; line-height: 1.25; }
-            .contenedor-imagen-inferior { padding: 0px; margin-bottom: 40px; }
-            .marco-imagen-editorial { height: auto; border-radius: 0px; box-shadow: none; }
-            .marco-imagen-editorial img { width: 100%; height: auto; object-fit: contain; }
+            
+            .contenedor-imagen-inferior { 
+                padding: 0 20px; 
+                margin-bottom: 40px; 
+            }
+            .marco-imagen-editorial { 
+                height: 300px; 
+                border-radius: 15px; 
+                box-shadow: 0 15px 35px rgba(45, 35, 25, 0.15); 
+            }
+            .marco-imagen-editorial img { 
+                width: 100%; 
+                height: 100%; 
+                object-fit: cover; 
+            }
+            
             .modal-ventana { padding: 15px; outline: 6px solid #faf8f5; width: 90%; }
             .modal-ventana img { height: 230px; margin-bottom: 12px; }
             .modal-ventana h3 { font-size: 1.2rem; letter-spacing: 3px; }
@@ -570,6 +592,7 @@
     <!-- BOTÓN PROVISIONAL PARA PROBAR EL EVENTO CUALQUIER DÍA -->
     <button class="btn-probar-viernes" onclick="forzarEfectoViernes()">Probar Viernes de Donas 🍩</button>
 
+    <!-- PANTALLA DE ENTRADA / BIENVENIDA -->
     <section class="bienvenida" id="pantallaBienvenida">
         <button class="btn-ver-menu" id="btnVerMenu">Ver Menú</button>
     </section>
@@ -692,7 +715,6 @@
         const urlParams = new URLSearchParams(window.location.search);
 
         function mostrarMenuDirecto(conAnimacion) {
-            // FLUJO ESPECIAL LOS VIERNES: Muestra la portada, pero al dar clic salta a la animación de donas
             if (esViernes && urlParams.get('saltar') !== 'true') {
                 if (conAnimacion) {
                     capaTransicion.classList.add('activo');
@@ -705,10 +727,9 @@
                     pantallaBienvenida.style.display = 'none';
                     ejecutarAnimacionDonas();
                 }
-                return; // Frena el flujo para que el menú de bebidas no aparezca de fondo
+                return;
             }
 
-            // FLUJO NORMAL (SÁBADO A JUEVES, o si regresa de las donas con ?saltar=true)
             if (conAnimacion) {
                 capaTransicion.classList.add('activo');
                 setTimeout(() => {
@@ -727,7 +748,6 @@
         }
 
         function evaluarEventoViernesAlCargar() {
-            // Si regresa desde la página de donas mediante el parámetro especial (?saltar=true)
             if (urlParams.get('saltar') === 'true') { 
                 mostrarMenuDirecto(false); 
             }
@@ -739,10 +759,8 @@
             capaViernes.classList.add('activada');
             animarLetrasViernes();
 
-            // Tormenta masiva e interactiva de donas
             const intervaloLluvia = setInterval(crearDonaFlotante, 35);
 
-            // TRANSICIÓN PERFECTA: Redirigimos manteniendo la pantalla rosa 100% opaca
             setTimeout(() => {
                 clearInterval(intervaloLluvia);
                 window.location.href = 'viernes_donas.html';
@@ -785,7 +803,6 @@
             const imagenAleatoria = imagenesDonasCayendo[Math.floor(Math.random() * imagenesDonasCayendo.length)];
             dona.src = imagenAleatoria;
             
-            // EFECTO DE CAPAS 3D: el 35% de las donas caen por detrás del texto de forma sutil
             const pasaPorAtras = Math.random() < 0.35; 
             dona.className = pasaPorAtras ? 'dona-cayendo dona-atras' : 'dona-cayendo dona-al-frente';
             
@@ -803,13 +820,9 @@
             setTimeout(() => { dona.remove(); }, duracionCaida * 1000);
         }
 
-        // Acciones del botón de la Portada
         btnVerMenu.addEventListener('click', () => { mostrarMenuDirecto(true); });
-
-        // Verificación inicial al cargar la página
         evaluarEventoViernesAlCargar();
 
-        // Control del banner inferior intercambiable
         contenedorDonas.addEventListener('click', () => {
             const estadoActual = imagenDonas.getAttribute('data-actual');
             if (estadoActual === 'perfil') {
